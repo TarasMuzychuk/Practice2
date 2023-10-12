@@ -1,0 +1,48 @@
+taras@taras-VirtualBox:~$ nano filecreator.sh
+taras@taras-VirtualBox:~$ chmod +x filecreator.sh
+taras@taras-VirtualBox:~$ ./filecreator.sh
+taras@taras-VirtualBox:~$ ls
+ batchrename.sh    Taras12   Taras19   Taras25   Taras9        Общедоступные
+ filecreator.sh    Taras13   Taras2    Taras3    tmp1         'Рабочий стол'
+ last_number.txt   Taras14   Taras20   Taras4    Видео         Шаблоны
+ snap              Taras15   Taras21   Taras5    Документы
+ Taras1            Taras16   Taras22   Taras6    Загрузки
+ Taras10           Taras17   Taras23   Taras7    Изображения
+ Taras11           Taras18   Taras24   Taras8    Музыка
+taras@taras-VirtualBox:~$ cat last_number.txt
+25
+taras@taras-VirtualBox:~$ rm Taras25
+taras@taras-VirtualBox:~$ ls
+ batchrename.sh    Taras12   Taras19   Taras3   tmp1           'Рабочий стол'
+ filecreator.sh    Taras13   Taras2    Taras4   Видео           Шаблоны
+ last_number.txt   Taras14   Taras20   Taras5   Документы
+ snap              Taras15   Taras21   Taras6   Загрузки
+ Taras1            Taras16   Taras22   Taras7   Изображения
+ Taras10           Taras17   Taras23   Taras8   Музыка
+ Taras11           Taras18   Taras24   Taras9   Общедоступные
+taras@taras-VirtualBox:~$ ./filecreator.sh
+taras@taras-VirtualBox:~$ ls
+ batchrename.sh    Taras16   Taras27   Taras37   Taras47   Документы
+ filecreator.sh    Taras17   Taras28   Taras38   Taras48   Загрузки
+ last_number.txt   Taras18   Taras29   Taras39   Taras49   Изображения
+ snap              Taras19   Taras3    Taras4    Taras5    Музыка
+ Taras1            Taras2    Taras30   Taras40   Taras50   Общедоступные
+ Taras10           Taras20   Taras31   Taras41   Taras6   'Рабочий стол'
+ Taras11           Taras21   Taras32   Taras42   Taras7    Шаблоны
+ Taras12           Taras22   Taras33   Taras43   Taras8
+ Taras13           Taras23   Taras34   Taras44   Taras9
+ Taras14           Taras24   Taras35   Taras45   tmp1
+ Taras15           Taras26   Taras36   Taras46   Видео
+taras@taras-VirtualBox:~$
+
+
+
+last_number=$(<last_number.txt)
+last_number=${last_number:-0}  
+yourName="Taras"
+file_count=25
+for ((i = 1; i <= file_count; i++)); do
+filename="${yourName}$((last_number + i))"
+touch "$filename"
+done
+echo $((last_number + file_count)) > last_number.txt
