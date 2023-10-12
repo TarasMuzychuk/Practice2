@@ -1,0 +1,69 @@
+taras@taras-VirtualBox:~$ nano addressbook.sh
+taras@taras-VirtualBox:~$ chmod +x addressbook.sh
+taras@taras-VirtualBox:~$ ./addressbook.sh new "Taras Muzychuk" tarasgmail.com
+taras@taras-VirtualBox:~$ ./addressbook.sh list
+Taras Muzychuk tarasgmail.com
+taras@taras-VirtualBox:~$ ./addressbook.sh remove "Taras Muzychuk"
+taras@taras-VirtualBox:~$ ./addressbook.sh list
+Адреснная книга пустая
+taras@taras-VirtualBox:~$
+
+addressbook_file="addressbook.txt"  # Имя файла адресной книги
+
+# Проверка наличия файла адресной книги и его создания, если файл не существует
+[ ! -e "$addressbook_file" ] && touch "$addressbook_file"
+
+# Функция добавления записи
+add_contact() {
+    local name="$1"
+    local email="$2"
+    echo "$name $email" >> "$addressbook_file"
+}
+
+# Функция удаления всех записей для заданного имени
+remove_contact() {
+    local name="$1"
+    sed -i "/^$name/d" "$addressbook_file"
+}
+
+# Функция удаления всех записей из файла
+clear_addressbook() {
+    > "$addressbook_file"
+}
+
+# Функция вывода всех записей или адресов для заданного имени
+list_contacts() {
+    local name="$1"
+    if [ -s "$addressbook_file" ]; then
+        if [ "$name" ]; then
+            grep "^$name" "$addressbook_file" | awk '{print $2}'
+        else
+            cat "$addressbook_file"
+        fi
+    else
+        echo "Адреснная книга пустая"
+    fi
+}
+
+# Главный блок обработки команд
+case "$1" in
+    new)
+        add_contact "$2" "$3"
+        ;;
+    remove)
+        remove_contact "$2"
+        ;;
+    clear)
+        clear_addressbook
+        ;;
+    lookup)
+        list_contacts "$2"
+        ;;
+    list)
+        list_contacts
+        ;;
+    *)
+        echo "Неизвестная команда: $1"
+        echo "Доступные команды: new, remove, clear, lookup, list"
+        ;;
+esac
