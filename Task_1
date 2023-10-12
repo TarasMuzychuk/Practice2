@@ -1,0 +1,24 @@
+taras@taras-VirtualBox:~$ nano batchrename.sh
+taras@taras-VirtualBox:~$ chmod +x batchrename.sh
+taras@taras-VirtualBox:~$ mkdir tmp1 && touch tmp1/{a..z}.dat
+taras@taras-VirtualBox:~$ ls -lAh tmp1 | grep .txt | wc -l
+26 
+
+
+if (( $# != 3 )); then
+echo "Использование: $0 <каталог> <оригинальное расширение> <новое расширение>"
+exit 1
+fi
+
+directory="$1"
+original_ext="$2"
+new_ext="$3"
+
+cd "$directory" || exit 1
+
+for file in *."$original_ext"; do
+if [[ -e "$file" ]]; then
+mv -- "$file" "${file%.$original_ext}.$new_ext"
+echo "Переименовываю $file на ${file%.$original_ext}.$new_ext"
+fi
+done
